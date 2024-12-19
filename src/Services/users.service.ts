@@ -1,5 +1,5 @@
 import UsersDAO from "../DAOs/mongodb/users.dao";
-import UsersDto from "../DTOs/users.dto";
+import UsersDTO from "../DTOs/users.dto";
 import { User, UserCreate } from "../Type/user.type";
 import { getHashPassword } from "../utils/bcrypt.util";
 
@@ -48,12 +48,28 @@ const updateOne = async ({id, userInfo}: {id: string, userInfo: User}) => {
     };
 };
 
+const addProject = async (userId: string, projectId: string) => {
+    try {
+        return await Users.addNewProject(userId, projectId);
+    } catch (error) {
+        throw error;
+    };
+};
+
+const exitProject = async (userId: string, projectId: string) => {
+    try {
+        return await Users.exitProject(userId, projectId);
+    } catch (error) {
+        throw error;
+    };
+};
+
 const create = async (userInfo: UserCreate) => {
     try {
         const isEmailExist = await Users.getOne({ email: userInfo.email });
         if(!isEmailExist) {
             userInfo.password = getHashPassword(userInfo.password);
-            const newUser = new UsersDto(userInfo);
+            const newUser = new UsersDTO(userInfo);
             const response = await Users.create(newUser);
             return response;
         } else {
@@ -76,7 +92,9 @@ export {
     getAll, 
     getById, 
     getOne, 
-    updateOne, 
+    updateOne,
+    addProject, 
+    exitProject,
     create, 
     deleteById 
 };

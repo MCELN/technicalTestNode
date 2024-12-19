@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as usersService from "../Services/users.service";
+import * as projectsServices from "../Services/projects.service";
 
 
 const router = Router();
@@ -30,6 +31,17 @@ router.post("/create", async (req, res) => {
         res.json(newUser);
     } catch (error) {
         res.status(500).json({ message: "Error al crear el usuario" });
+    }
+});
+
+router.put("/project/exit/:projectId", async (req, res) => {
+    try {
+        const { projectId } = req.params;
+        const { userId } = req.body;
+        await projectsServices.removeUserFromProject(userId, projectId);
+        res.json("success");
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar el usuario" });
     }
 });
 

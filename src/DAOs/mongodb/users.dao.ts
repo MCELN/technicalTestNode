@@ -1,5 +1,5 @@
-import { UserCreate } from "../../Type/user.type";
 import Users from "./models/users.models";
+import type { User, UserCreate } from "../../Type/user.type";
 
 class UsersDAO {
 
@@ -35,13 +35,26 @@ class UsersDAO {
         }
     };
 
-    async updateOne(id: string, data: any) {
+    async updateOne(id: string, data: User) {
         try {
-            return await Users.updateOne({ _id: id }, {$set: data});
+            const response = await Users.updateOne({ _id: id }, {$set: data});
+            return response;
         } catch (error) {
             throw error;
         };
     };
+
+    async addNewProject(id: string, projectId: string) {
+        try {
+            return await Users.updateOne({_id: id}, {
+                $push: {
+                    projects: projectId
+                }
+            });
+        } catch (error) {
+            throw error;
+        };
+    }
 
     async create(userInfo: UserCreate) {
         try {
@@ -51,6 +64,18 @@ class UsersDAO {
             throw error;
         };
     };
+
+    async exitProject(id: string, projectId: string) {
+        try {
+            return await Users.updateOne({ _id: id }, {
+                $pull: {
+                    projects: projectId
+                }
+            });
+        } catch (error) {
+            throw error;
+        };
+    }
 
     async deleteById(id: string) {
         try {

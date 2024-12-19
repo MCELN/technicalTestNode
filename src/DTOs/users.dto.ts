@@ -1,6 +1,6 @@
-import { UserCreate } from "../Type/user.type";
+import type { UserCreate } from "../Type/user.type";
 
-class UsersDto {
+class UsersDTO {
     userName: string;
     email: string;
     password: string;
@@ -13,17 +13,9 @@ class UsersDto {
         this.createdAt = new Date();
     };
 
-    static fromUserCreate(userCreate: UserCreate): UsersDto {
-        return new UsersDto(userCreate);
-    };
-
-    toResponseObject(): object {
-        return {
-            userName: this.userName,
-            email: this.email,
-            createdAt: this.createdAt
-        };
+    static fromUserCreate(userCreate: UserCreate): UsersDTO {
+        return new UsersDTO(userCreate);
     };
 };
 
-export default UsersDto;
+export default UsersDTO;
